@@ -297,9 +297,6 @@ def new_getParams(data):
     return planetDictionary
 # ################### END ARCHIVE SCRAPER (PRIORS) ############################
 
-#Get Julian time, don't need to divide by 2 since assume mid-EXPOSURE
-#Find separate funciton in code that does julian conversion to BJD_TDB
-
 # Method that gets and returns the julian time of the observation
 def getJulianTime(hdul):
     exptime_offset = 0
