@@ -470,6 +470,22 @@ def fluxConvert(fluxList, errorList, fluxFormat):
     meanErrorList = (positiveErrorDistance * negativeErrorDistance) ** (0.5)
     return fluxList, meanErrorList
 
+#Scale dark images to match time of science images if user requests to do so
+# Talk to Marlee to estimate exposure time for all images
+# Usually this is constant
+# Compare that value to dark images (close off camera take exposure that's dark frame from internal light only)
+# Scale dark time to equal science time if not already done so
+# units are in seconds and fractions of seconds
+#1 second w/ 10 photons
+#Number of photons scales directly with exposure time
+#Science Time/Dark Image * Dark Image time
+#Do this on a per image, can vary from science image to science image
+# Master Dark = average of all dark frames submitted by user
+# Scale ONLY Master Dark INDEPENDENTLY with each science image
+#Find Master Dark code, ask Marlee about exposure time extractor 
+def darkScale():
+    return
+
 # --------PLANETARY PARAMETERS UI------------------------------------------
 # Get the user's confirmation of values that will later be used in lightcurve fit
 def get_planetary_parameters(candplanetbool, userpdict, pdict=None):
