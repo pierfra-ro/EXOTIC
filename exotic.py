@@ -470,21 +470,32 @@ def fluxConvert(fluxList, errorList, fluxFormat):
     meanErrorList = (positiveErrorDistance * negativeErrorDistance) ** (0.5)
     return fluxList, meanErrorList
 
-#Scale dark images to match time of science images if user requests to do so
+# Scale dark images to match time of science images if user requests to do so
 # Talk to Marlee to estimate exposure time for all images
 # Usually this is constant
 # Compare that value to dark images (close off camera take exposure that's dark frame from internal light only)
 # Scale dark time to equal science time if not already done so
 # units are in seconds and fractions of seconds
-#1 second w/ 10 photons
 #Number of photons scales directly with exposure time
-#Science Time/Dark Image * Dark Image time
+#Science Time/Dark Image time * Dark Image
 #Do this on a per image, can vary from science image to science image
 # Master Dark = average of all dark frames submitted by user
 # Scale ONLY Master Dark INDEPENDENTLY with each science image
-#Find Master Dark code, ask Marlee about exposure time extractor 
-def darkScale():
-    return
+#find average, standard deviation of flux levels in dark images
+#plot image number vs flux
+def darkScale(sciExposureTime, darkExposureTime, darkImage):
+    #Do nothing if the time lengths of both file types are already the same
+    if sciExposureTime == darkExposureTime:
+        return darkExposureTime
+    else:
+        #If the times don't match, warn user for future use and give them the option to scale the images if they want to
+        print("WARNING: Dark exposure time is not equivalent to science exposure time.")
+        print("It is strongly advised to have equal exposure times for both science and dark images before using EXOTIC in the future.")
+        print("Now scaling dark images to equal science image...")
+
+        timeRatio = sciExposureTime / darkExposureTime
+        scaledImage = timeRatio * darkImage
+        return scaledImage
 
 # --------PLANETARY PARAMETERS UI------------------------------------------
 # Get the user's confirmation of values that will later be used in lightcurve fit
@@ -1784,6 +1795,8 @@ if __name__ == "__main__":
                     infoDict['exposure'] = np.median(exptimes)
                     #print(infoDict['exposure'])
 
+                #Check for dark/science scale here????
+                darkScale(infoDict['exposure'], generalDark)
                 # Recast list as numpy arrays
                 allImageData = np.array(allImageData)
                 timesListed = np.array(timesListed)
@@ -1868,6 +1881,7 @@ if __name__ == "__main__":
                 # apply cals correction if applicable
                 if darksBool:
                     print("Dark subtracting images.")
+                    #Multiply generalDark by the scaled value before doing substraction
                     sortedallImageData = sortedallImageData - generalDark
                 elif biasesBool:
                     print("Bias-correcting images.")
