@@ -1841,8 +1841,6 @@ def main():
                     #print(infoDict['exposure'])
 
                 #Check for dark/science scale here????
-                import pdb;
-                pdb.set_trace()
                 darkScale(infoDict['exposure'], generalDark)
                 # Recast list as numpy arrays
                 allImageData = np.array(allImageData)
