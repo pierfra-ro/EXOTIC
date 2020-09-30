@@ -481,11 +481,11 @@ def get_save_directory(save_directory):
                     raise OSError
             return save_directory
         except OSError:
-            print('Error: the directory entered does not exist. Please try again. Make sure to follow this formatting (using whichever directory you choose): /sample-data/results')
+            print('Error: the directory entered does not exist. Please try again. Make sure the path is from your current directory and follows this formatting: sample-data/results')
             save_directory = input("Enter the directory to save the results and plots into or type new to create one: ")
 
             writelogfile.write(
-                '\nError: the directory entered does not exist. Please try again. Make sure to follow this formatting (using whichever directory you choose): /sample-data/results')
+                '\nError: the directory entered does not exist. Please try again. Make sure the path is from your current directory and follows this formatting: sample-data/results')
             writelogfile.write("\nEnter the directory to save the results and plots into or type new to create one: "+save_directory)
 
 
@@ -2027,6 +2027,10 @@ def main():
             if fileorcommandline == 1:
                 infoDict['fitsdir'] = str(input("\nEnter the directory path where imaging files are located. (Example using the sample data: 'sample-data/HatP32Dec202017'): "))
                 writelogfile.write("\n\nEnter the directory path where imaging files are located. (Example using the sample data: 'sample-data/HatP32Dec202017'): "+str(infoDict['fitsdir']))
+                if infoDict['fitsdir'][0] == '/':
+                    slice = infoDict['fitsdir']
+                    slice = slice[1:]
+                    infoDict['fitsdir'] = slice
 
             infoDict['fitsdir'], inputfiles = check_imaging_files(infoDict['fitsdir'], 'imaging')
         else:
@@ -2050,6 +2054,10 @@ def main():
 
         if fileorcommandline == 1:
             infoDict['saveplot'] = input("Enter the directory to save the results and plots into or type new to create one: ")
+            if infoDict['saveplot'][0] == '/':
+                slice = infoDict['saveplot']
+                slice = slice[1:]
+                infoDict['saveplot'] = slice
             writelogfile.write("\nEnter the directory to save the results and plots into or type new to create one: "+str(infoDict['saveplot']))
 
         infoDict['saveplot'] = get_save_directory(infoDict['saveplot'])
