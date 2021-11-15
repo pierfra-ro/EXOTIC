@@ -1,5 +1,5 @@
 # pipreqs /path/to/your/project/
-astroalign~=2.0
+astroalign~=2.4
 astropy>=4.0.1.post1
 astroquery~=0.4
 astroscrappy~=1.0
